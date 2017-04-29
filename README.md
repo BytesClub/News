@@ -33,6 +33,12 @@ python news.py [OPTIONS]
 
 ### OPTIONS
     -fp, --frontpage                       Download the frontpage
+    -n, --nation                       Download the Nations page
+    -f, --foreign                       Download the Foreign page
+    -c, --calcutta                       Download the Calcutta page
+    -b, --bengal                       Download the Bengal page
+    -bsns, --business                       Download the Business page
+    -s, --sports                       Download the Sports page
 
 ### Contribution
 
