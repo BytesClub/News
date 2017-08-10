@@ -3,7 +3,9 @@ import bs4 as bs
 import requests
 from collections import defaultdict
 from reportlab.pdfgen import canvas
-from textwrap import wrap
+from reportlab.platypus import Paragraph, Frame, KeepInFrame
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
 
 base_url = 'https://www.telegraphindia.com/'
 
@@ -69,15 +71,15 @@ def getData(category,c):
                         story = sub_filter.find_all('td', class_ = 'story')
 
                         for paragraphs in story:
-                                textobject = c.beginText()
-                                textobject.setTextOrigin(10,800)
                                 p = paragraphs.find_all('p')
+                                frame1 = Frame(0, 0, 8*inch, 8*inch, showBoundary=1)
+                                styles = getSampleStyleSheet()
                                 for line in p:
                                         print line.text
-                                        txt = line.text
-                                        wraped_text = "\n".join(wrap(txt,80))
-                                        textobject.textLines(wraped_text)                      
-                c.drawText(textobject)
+                                        story = [Paragraph(str(line.text.encode('utf-8')), styles['Normal'])]
+                                        story_inframe = KeepInFrame(8*inch, 8*inch, story)
+                                        frame1.addFromList([story_inframe], c)
+                                        
                 c.showPage()            
 
                 print "\n\n\n\n"
@@ -106,5 +108,5 @@ def main(c):
 
 if __name__ == "__main__":
         link_datasets()
-        c = canvas.Canvas("hello.pdf")
+        c = canvas.Canvas("todaynews"+sys.argv[1]+".pdf")
         main(c)
